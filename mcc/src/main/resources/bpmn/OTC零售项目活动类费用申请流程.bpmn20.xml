@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn"
+    xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC"
+    xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema"
+    expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/processdef">
+    <process id="OTC零售项目活动类费用申请流程" name="OTC零售项目活动类费用申请流程" isExecutable="true">
+        <startEvent id="START" name="开始" activiti:initiator="applyUserId"></startEvent>
+        <endEvent id="FINISH" name="结束"></endEvent>
+        <userTask id="BUDGET_LOOK_APPLICATION_CHECK_1" name="一级领导"
+            activiti:candidateGroups="oneLevelsOfLeadership"></userTask>
+        <userTask id="APPLICATION_CHECK_2" name="会计管理 （费用稽查）"
+            activiti:candidateGroups="kuaijiguanlifydc"></userTask>
+        <userTask id="APPLICATION_CHECK_5" name="财务管理中心总经理"
+            activiti:candidateGroups="caiwuguanlizhongxinzongjingli"></userTask>
+        <userTask id="APPLICATION_CHECK_6" name="分管副/助理总裁"
+            activiti:candidateGroups="yingxiaozhongxinfenguanlingdao"></userTask>
+        <userTask id="APPLICATION_CHECK_7" name="分管财务副总裁" activiti:candidateGroups="FGCWFZC"></userTask>
+        <userTask id="APPLICATION_CHECK_3" name="财务管理中心副总经理"
+            activiti:candidateGroups="CWGLZXFZJL"></userTask>
+        <userTask id="APPLICATION_CHECK_4" name="中心/部门总经理"
+            activiti:candidateGroups="projectManagerOTC"></userTask>
+        <userTask id="BUDGET_LOOK_BUDGET_OCCUPY" name="费用政策与预算管控专员"
+            activiti:candidateGroups="leven1OrderPost"></userTask>
+        <sequenceFlow id="sid-4975EC5E-D0D7-4DDA-A0FD-C9825A65D406" sourceRef="START"
+            targetRef="APPLICATION_FILL"></sequenceFlow>
+        <exclusiveGateway id="sid-2AACC206-0241-4CAB-9A00-F88869353098"></exclusiveGateway>
+        <exclusiveGateway id="sid-75100E3E-001B-49C1-B131-3C42798C7CB8"></exclusiveGateway>
+        <exclusiveGateway id="sid-63AB111B-606E-4325-B6E5-2FD96A97FC9F"></exclusiveGateway>
+        <sequenceFlow id="sid-1CF86E2C-CA64-495B-9B8C-6249CF254359" sourceRef="APPLICATION_CHECK_6"
+            targetRef="APPLICATION_CHECK_7"></sequenceFlow>
+        <sequenceFlow id="sid-E892B9DB-BD60-4048-A659-A13CB8AAAE66" sourceRef="APPLICATION_CHECK_5"
+            targetRef="sid-63AB111B-606E-4325-B6E5-2FD96A97FC9F"></sequenceFlow>
+        <userTask id="APPLICATION_FILL" name="起草节点" activiti:assignee="${applyUserId}"></userTask>
+        <exclusiveGateway id="sid-1CC9D951-8D17-4EFA-B875-256647236168"></exclusiveGateway>
+        <userTask id="APPLICATION_CHECK_12" name="二级领导" activiti:candidateGroups="twoLevelsOfLeadership"></userTask>
+        <userTask id="APPLICATION_CHECK_13" name="三级领导" activiti:candidateGroups="threeLevelsOfLeadership"></userTask>
+        <sequenceFlow id="sid-6251904B-2306-420F-990A-D7E542D12819" sourceRef="APPLICATION_CHECK_4"
+            targetRef="sid-75100E3E-001B-49C1-B131-3C42798C7CB8"></sequenceFlow>
+        <userTask id="APPLICATION_CHECK_0" name="直接领导" activiti:candidateGroups="zhijieshangji"></userTask>
+        <exclusiveGateway id="sid-4D4BC8AE-154A-4A98-8AB0-DF8C02CE1EFB"></exclusiveGateway>
+        <sequenceFlow id="sid-9A71B518-EF17-461D-821B-D95C7FE224CD" sourceRef="BUDGET_LOOK_BUDGET_OCCUPY"
+            targetRef="FINISH"></sequenceFlow>
+        <sequenceFlow id="sid-49683668-4242-410F-B337-8AB5CADE96DF" sourceRef="APPLICATION_FILL"
+            targetRef="sid-4D4BC8AE-154A-4A98-8AB0-DF8C02CE1EFB"></sequenceFlow>
+        <sequenceFlow id="sid-CEC3D367-58E4-4FB7-B896-F8F22FF50E1F" sourceRef="APPLICATION_CHECK_7"
+            targetRef="BUDGET_LOOK_BUDGET_OCCUPY"></sequenceFlow>
+        <sequenceFlow id="sid-C0A202DA-DC94-450F-A67E-5BE4AABCC98A" sourceRef="APPLICATION_CHECK_0"
+            targetRef="APPLICATION_CHECK_12"></sequenceFlow>
+        <sequenceFlow id="sid-EADA1873-34ED-4490-BBC5-F38BAB26305E" sourceRef="sid-1CC9D951-8D17-4EFA-B875-256647236168"
+            targetRef="APPLICATION_CHECK_13">
+            <conditionExpression xsi:type="tFormalExpression"><![CDATA[${null != post_name_set && -1 != post_name_set.indexOf("二级领导") && -1 == post_name_set.indexOf("三级领导")}]]></conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="sid-D46A422F-3077-4B8E-BF94-9B71616C4629" sourceRef="APPLICATION_CHECK_12"
+            targetRef="APPLICATION_CHECK_13"></sequenceFlow>
+        <sequenceFlow id="sid-0E9859BB-7DAF-43F9-9B6E-DC36A36C3BCC" sourceRef="BUDGET_LOOK_APPLICATION_CHECK_1"
+            targetRef="APPLICATION_CHECK_12"></sequenceFlow>
+        <sequenceFlow id="sid-1EE961BD-51CD-4EBF-96D8-F173BD911FD5" sourceRef="sid-1CC9D951-8D17-4EFA-B875-256647236168"
+            targetRef="BUDGET_LOOK_APPLICATION_CHECK_1">
+            <conditionExpression xsi:type="tFormalExpression"><![CDATA[${ null == post_name_set || ( -1 == post_name_set.indexOf("一级领导") && -1 == post_name_set.indexOf("二级领导") && -1 == post_name_set.indexOf("三级领导") )}]]></conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="sid-B704D6FF-EECA-49C4-A982-5F54934830C4" sourceRef="APPLICATION_CHECK_3"
+            targetRef="APPLICATION_CHECK_4"></sequenceFlow>
+        <sequenceFlow id="sid-3EEE385D-C589-4C4D-9996-AB47A3ABF4C7" sourceRef="APPLICATION_CHECK_2"
+            targetRef="APPLICATION_CHECK_3"></sequenceFlow>
+        <sequenceFlow id="sid-A0429A4B-CC67-48D7-B64C-B01A17F8ACC9" sourceRef="sid-2AACC206-0241-4CAB-9A00-F88869353098"
+            targetRef="APPLICATION_CHECK_3">
+            <conditionExpression xsi:type="tFormalExpression"><![CDATA[${info_has_loan=='否'}]]></conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="sid-FA3F73D6-28A0-4B8C-996A-10254D17A30E" sourceRef="sid-1CC9D951-8D17-4EFA-B875-256647236168"
+            targetRef="APPLICATION_CHECK_12">
+            <conditionExpression xsi:type="tFormalExpression"><![CDATA[${null != post_name_set && -1 != post_name_set.indexOf("一级领导") && -1 == post_name_set.indexOf("二级领导") && -1 == post_name_set.indexOf("三级领导")}]]></conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="sid-C503FE35-70DC-4C75-8B80-FF38FBF65A04" sourceRef="sid-1CC9D951-8D17-4EFA-B875-256647236168"
+            targetRef="sid-2AACC206-0241-4CAB-9A00-F88869353098">
+            <conditionExpression xsi:type="tFormalExpression"><![CDATA[${null != post_name_set && -1 != post_name_set.indexOf("三级领导")}]]></conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="sid-5257D4E0-72C4-4398-974C-A1DC27CB9C83" sourceRef="APPLICATION_CHECK_13"
+            targetRef="sid-2AACC206-0241-4CAB-9A00-F88869353098"></sequenceFlow>
+        <sequenceFlow id="sid-8C95083A-016F-4325-B625-371959BD48FE" sourceRef="sid-4D4BC8AE-154A-4A98-8AB0-DF8C02CE1EFB"
+            targetRef="sid-1CC9D951-8D17-4EFA-B875-256647236168">
+            <conditionExpression xsi:type="tFormalExpression"><![CDATA[${info_activity_type_name!="媒介客户维持"}]]></conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="sid-618D4190-E27A-456D-A852-AAE8D9270366" name="媒介客户维持"
+            sourceRef="sid-4D4BC8AE-154A-4A98-8AB0-DF8C02CE1EFB" targetRef="APPLICATION_CHECK_0">
+            <conditionExpression xsi:type="tFormalExpression"><![CDATA[${info_activity_type_name=="媒介客户维持"}]]></conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="sid-D41DFF45-1117-4AC9-B91B-674C25D7F3F3" name="借款"
+            sourceRef="sid-2AACC206-0241-4CAB-9A00-F88869353098" targetRef="APPLICATION_CHECK_2">
+            <conditionExpression xsi:type="tFormalExpression"><![CDATA[${info_has_loan=='是'}]]></conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="sid-9969F4C1-22BB-4F69-BF21-08D7B9095BE6" name="100万以上或借款20万以上"
+            sourceRef="sid-75100E3E-001B-49C1-B131-3C42798C7CB8" targetRef="APPLICATION_CHECK_5">
+            <conditionExpression xsi:type="tFormalExpression"><![CDATA[${info_apply_amount >= 1000000.00 || 
+info_loan_amount >= 200000.00}]]></conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="sid-496F6011-904E-4A4D-B536-8D6F170E7CBA" sourceRef="sid-75100E3E-001B-49C1-B131-3C42798C7CB8"
+            targetRef="BUDGET_LOOK_BUDGET_OCCUPY">
+            <conditionExpression xsi:type="tFormalExpression"><![CDATA[${ !( info_apply_amount >= 1000000.00
+ || info_loan_amount >= 200000.00 ) }]]></conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="sid-5890AD12-387A-4981-974D-87A683EF9D51" sourceRef="sid-63AB111B-606E-4325-B6E5-2FD96A97FC9F"
+            targetRef="BUDGET_LOOK_BUDGET_OCCUPY">
+            <conditionExpression xsi:type="tFormalExpression"><![CDATA[${ ! ( info_apply_amount >= 2000000.00
+ || info_loan_amount >= 500000.00 ) }]]></conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="sid-79AF3E12-17C8-4174-8071-8F0BFFF5EF60" name="200万以上或借款50万以上"
+            sourceRef="sid-63AB111B-606E-4325-B6E5-2FD96A97FC9F" targetRef="APPLICATION_CHECK_6">
+            <conditionExpression xsi:type="tFormalExpression"><![CDATA[${info_apply_amount >= 2000000.00 || 
+ info_loan_amount >= 500000.00}]]></conditionExpression>
+        </sequenceFlow>
+    </process>
+</definitions>

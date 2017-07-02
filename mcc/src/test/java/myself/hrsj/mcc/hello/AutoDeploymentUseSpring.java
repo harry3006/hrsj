@@ -26,7 +26,9 @@ public class AutoDeploymentUseSpring {
         
         List<ProcessDefinition> list = repositoryService.createProcessDefinitionQuery().list();
         for (ProcessDefinition processDefinition : list) {
-            repositoryService.deleteDeployment(processDefinition.getDeploymentId(), true);
+            if ("SayHelloToLeave".equals(processDefinition.getKey())) {
+                repositoryService.deleteDeployment(processDefinition.getDeploymentId(), true);
+            }
         }
     }
 
